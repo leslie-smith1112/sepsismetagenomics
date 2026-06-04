@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nf-core/sepsismetagenomics
+    Graimlab/sepsismetagenomics
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/nf-core/sepsismetagenomics
+    Github : https://github.com/Graimlab/sepsismetagenomics
 ----------------------------------------------------------------------------------------
 */
 
@@ -12,6 +12,14 @@
     IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
+/*
+ * Pipeline parameters
+ */
+// params {
+//     input: String = 'Hola mundo!'
+// }
+
 
 include { SEPSISMETAGENOMICS  } from './workflows/sepsismetagenomics'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_sepsismetagenomics_pipeline'
@@ -57,6 +65,7 @@ workflow NFCORE_SEPSISMETAGENOMICS {
     )
     emit:
     multiqc_report = SEPSISMETAGENOMICS.out.multiqc_report // channel: /path/to/multiqc_report.html
+
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,6 +95,7 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     NFCORE_SEPSISMETAGENOMICS (
+        
         PIPELINE_INITIALISATION.out.samplesheet
     )
     //
@@ -101,6 +111,15 @@ workflow {
     )
 }
 
+// output { // todo this will need to be changed
+//     first_output {
+//         path 'hello_world'
+//         mode 'copy'
+//     }
+// }
+    // is this the right place?
+    // publish:
+    // first_output = sayHello.out <- only allowed in the entry workflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     THE END
