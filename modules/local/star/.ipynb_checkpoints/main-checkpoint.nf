@@ -14,7 +14,7 @@ process STAR {
     path "${meta.id}_Log.final.out"
     path "${meta.id}_Log.out"
     path "${meta.id}_Log.progress.out"
-    tuple val(meta), path("${meta.id}_Unmapped.out.mate1")  emit:
+    tuple val(meta), path("${meta.id}_Unmapped.out.mate1") emit:
     path "${meta.id}_SJ.out.tab"
 
 // conditional execution fate, only runs when 
