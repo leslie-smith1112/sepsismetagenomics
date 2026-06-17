@@ -4,6 +4,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 include { STAR } from '../modules/local/star/main'
+include { KRAKEN } from '../modules/local/kraken/main'
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
@@ -30,6 +31,8 @@ workflow SEPSISMETAGENOMICS {
 
     def ch_versions = channel.empty()
     def ch_multiqc_files = channel.empty()
+    
+    
     //
     // MODULE: Run FastQC
     //
@@ -38,6 +41,11 @@ workflow SEPSISMETAGENOMICS {
 
     STAR(ch_samplesheet, []) // second input here would be the index
     def ch_unmapped = STAR.out.unmapped_reads
+    ch_multiqc_files = ch_multiqc_files.mix(STAR.out.log_final.map{_meta,file -> file})
+
+    KRAKEN(STAR.out.unmapped_reads, []) // second inputhere would be the kraken db
+    ch_multiqc_files = ch_multiqc_files.mix(KRAKEN.out.report.map{ _meta, file -> file })
+
 
     //
     // Collate and save software versions
