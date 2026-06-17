@@ -1,0 +1,31 @@
+{
+    "stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.k2report:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "report": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.k2report:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-17T13:44:37.854951",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    }
+}
