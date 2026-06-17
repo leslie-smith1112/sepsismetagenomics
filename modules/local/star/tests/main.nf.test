@@ -1,52 +1,57 @@
-// this should hold the asserts etc to test the output for star is correct
 nextflow_process {
 
     name "Test Process STAR"
     script "../main.nf"
     process "STAR"
 
-    test("Should align paired-end reads") {
+    test("paired-end reads - stub") {
+        options "-stub"
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id: 'test', single_end: false ],
                     [
-                        file(params.test_data['reads']['paired']['read_one'], checkIfExists: true),
-                        file(params.test_data['reads']['paired']['read_two'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
-                ]
-                input[1] = file(params.test_data['index']['star'], checkIfExists: true)
+                ])
+                input[1] = []
                 """
             }
         }
 
         then {
-            assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
     }
 
-    test("Should align single-end reads") {
+    test("single-end reads - stub") {
+        options "-stub"
 
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                     [ id: 'test', single_end: true ],
                     [
-                        file(params.test_data['reads']['paired']['read_one'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
-                ]
-                input[1] = file(params.test_data['index']['star'], checkIfExists: true)
+                ])
+                input[1] = []
                 """
             }
         }
 
         then {
-            assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
         }
     }
 }

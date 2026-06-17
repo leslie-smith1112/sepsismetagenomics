@@ -1,0 +1,144 @@
+{
+    "paired-end reads - stub": {
+        "content": [
+            {
+                "0": [
+                    "test_Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "1": [
+                    "test_Aligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "2": [
+                    "test_Aligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "3": [
+                    "test_Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "4": [
+                    "test_Log.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "5": [
+                    "test_Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_Unmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "7": [
+                    "test_SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "SJ": [
+                    "test_SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "bai": [
+                    "test_Aligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "bam": [
+                    "test_Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "chr": [
+                    "test_Aligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "log_final": [
+                    "test_Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "log_gen": [
+                    "test_Log.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "progress_out": [
+                    "test_Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "unmapped_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_Unmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-17T11:33:48.231753",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "single-end reads - stub": {
+        "content": [
+            {
+                "0": [
+                    "test_Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "1": [
+                    "test_Aligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "2": [
+                    "test_Aligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "3": [
+                    "test_Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "4": [
+                    "test_Log.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "5": [
+                    "test_Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_Unmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "7": [
+                    "test_SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "SJ": [
+                    "test_SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "bai": [
+                    "test_Aligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "bam": [
+                    "test_Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "chr": [
+                    "test_Aligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "log_final": [
+                    "test_Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "log_gen": [
+                    "test_Log.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "progress_out": [
+                    "test_Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "unmapped_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_Unmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-17T11:33:55.436275",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    }
+}

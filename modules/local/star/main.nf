@@ -5,17 +5,17 @@ process STAR {
     input:
     //tuple val(dataset), val(sample), val(read_type), path(reads)
     tuple val(meta), path(reads, stageAs: '?/*')
-
+    path star_index
 
     output: 
-    path "${meta.id}_Aligned.sortedByCoord.out.bam"
-    path "${meta.id}_Aligned.sortedByCoord.out.bam.bai"
-    path "${meta.id}_Aligned.sortedByCoord.out_chrs.txt"
-    path "${meta.id}_Log.final.out"
-    path "${meta.id}_Log.out"
-    path "${meta.id}_Log.progress.out"
-    tuple val(meta), path("${meta.id}_Unmapped.out.mate1")  emit:
-    path "${meta.id}_SJ.out.tab"
+    path "${meta.id}_Aligned.sortedByCoord.out.bam", emit: bam
+    path "${meta.id}_Aligned.sortedByCoord.out.bam.bai", emit: bai
+    path "${meta.id}_Aligned.sortedByCoord.out_chrs.txt", emit: chr
+    path "${meta.id}_Log.final.out", emit: log_final
+    path "${meta.id}_Log.out", emit: log_gen
+    path "${meta.id}_Log.progress.out", emit: progress_out
+    tuple val(meta), path("${meta.id}_Unmapped.out.mate1"), emit: unmapped_reads
+    path "${meta.id}_SJ.out.tab", emit: SJ
 
 // conditional execution fate, only runs when 
     when:
