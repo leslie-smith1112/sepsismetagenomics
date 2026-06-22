@@ -10,4 +10,13 @@ null/
 .lineage/
 .Rproj.user
 assets/test_data/
-
+.nf-test.log
+.nf-test/
+.Rhistory
+Metadata.R
+assets/F_sample_sheet_lanes.csv
+assets/Faheem_samples_full_paths_run.txt
+assets/RNASeq_Master_Metadata.csv
+assets/all_sample_sheet_test.csv
+notes.md
+sepsismetagenomics.Rproj
