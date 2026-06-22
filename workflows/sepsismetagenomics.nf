@@ -3,6 +3,7 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+include { SRA_DOWNLOAD } from '../modules/local/sra_download/main'
 include { STAR } from '../modules/local/star/main'
 include { KRAKEN } from '../modules/local/kraken/main'
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
@@ -33,14 +34,25 @@ workflow SEPSISMETAGENOMICS {
     def ch_multiqc_files = channel.empty()
     
     
+    def ch_branched = ch_samplesheet.branch {
+        local: it[0].source == 'local' // it here is [meta, [fastq_1, fastq_2]], so we are looking at the meta part of the tuple and checking the source key
+        sra: it[0].source == 'sra'
+    }
+
+    SRA_DOWNLOAD(ch_branched.sra.map {meta, _reads -> meta}) // input is just the meta becasue we will get the reads from the output of this process, output is [meta, [fastq_1, fastq_2]]
+    def ch_reads = ch_branched.local.mix(SRA_DOWNLOAD.out.reads) // ch_reads is now a channel of tuples like [meta, [fastq_1, fastq_2]] where the reads are either from the local input or downloaded from sra
     //
     // MODULE: Run FastQC
     //
-    FASTQC(ch_samplesheet)
+
+    FASTQC(ch_reads)
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.map{ _meta, file -> file })
 
-    STAR(ch_samplesheet, []) // second input here would be the index
-    def ch_unmapped = STAR.out.unmapped_reads
+    def ch_star_index   = params.star_index   ? file(params.star_index)   : []
+    def ch_genome_fasta = params.genome_fasta ? file(params.genome_fasta) : []  
+
+    STAR(ch_reads, ch_star_index, ch_genome_fasta) // second input here would be the star index
+
     ch_multiqc_files = ch_multiqc_files.mix(STAR.out.log_final.map{_meta,file -> file})
 
     KRAKEN(STAR.out.unmapped_reads, []) // second inputhere would be the kraken db

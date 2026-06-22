@@ -1,0 +1,9 @@
+sample,fastq_1,fastq_2,source
+RS010,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/RS010_L001_R1.fastq.gz,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/RS010_L001_R2.fastq.gz,local
+RS010,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/RS010_L002_R1.fastq.gz,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/RS010_L002_R2.fastq.gz,local
+RS010,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/RS010_L003_R1.fastq.gz,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/RS010_L003_R2.fastq.gz,local
+RS010,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/RS010_L004_R1.fastq.gz,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/RS010_L004_R2.fastq.gz,local
+K003,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/K003_L1.sub.fastq.gz,,local
+K003,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/K003_L2.sub.fastq.gz,,local
+K003,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/K003_L3.sub.fastq.gz,,local
+K003,/Users/leslie.smith1/Repositories/GitHub/sepsismetagenomics/assets/test_data/small/K003_L4.sub.fastq.gz,,local
