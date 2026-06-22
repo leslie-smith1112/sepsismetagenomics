@@ -8,3 +8,6 @@ testing*
 *.pyc
 null/
 .lineage/
+.Rproj.user
+assets/test_data/
+
