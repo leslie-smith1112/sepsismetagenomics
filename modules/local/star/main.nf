@@ -6,16 +6,18 @@ process STAR {
     //tuple val(dataset), val(sample), val(read_type), path(reads)
     tuple val(meta), path(reads, stageAs: '?/*')
     path star_index
+    path genome_fasta
 
-    output: 
-    path "${meta.id}_Aligned.sortedByCoord.out.bam", emit: bam
-    path "${meta.id}_Aligned.sortedByCoord.out.bam.bai", emit: bai
-    path "${meta.id}_Aligned.sortedByCoord.out_chrs.txt", emit: chr
-    path "${meta.id}_Log.final.out", emit: log_final
-    path "${meta.id}_Log.out", emit: log_gen
-    path "${meta.id}_Log.progress.out", emit: progress_out
-    tuple val(meta), path("${meta.id}_Unmapped.out.mate1"), emit: unmapped_reads
-    path "${meta.id}_SJ.out.tab", emit: SJ
+    output:
+    tuple val(meta), path("${meta.id}_Aligned.sortedByCoord.out.bam"),          emit: bam
+    tuple val(meta), path("${meta.id}_Aligned.sortedByCoord.out.bam.bai"),      emit: bai
+    tuple val(meta), path("${meta.id}_Aligned.sortedByCoord.out_chrs.txt"),     emit: chr
+    tuple val(meta), path("${meta.id}_Log.final.out"),                           emit: log_final
+    tuple val(meta), path("${meta.id}_Log.out"),                                 emit: log_gen
+    tuple val(meta), path("${meta.id}_Log.progress.out"),                       emit: progress_out
+    tuple val(meta), path("${meta.id}_Unmapped.out.mate1"),                     emit: unmapped_reads
+    tuple val(meta), path("${meta.id}_SJ.out.tab"),                             emit: SJ
+
 
 // conditional execution fate, only runs when 
     when:
@@ -55,16 +57,43 @@ process STAR {
     // def fastqc_memory_arg = fastqc_memory ? "--memory ${fastqc_memory}" : ''
 
     if(meta.single_end){
+        // if single end, then we want to pass the reads as single ended
+        //pb run needs this to be a pattern like --in-se-fq sample1_1.fastq.gz for each lane
+        def reads_arg = reads.collect {read -> "--in-se-fq ${read}"}.join(' ')
         """
-        echo "SINGLE- would run single-ended star" > ${meta.id}.txt
-        
+        pbrun rna_fq2bam \\
+        ${reads_arg} \\
+        --genome-lib-dir ${star_index} \\
+        --output-dir . \\
+        --ref ${genome_fasta} \\
+        --out-bam ${prefix}_Aligned.sortedByCoord.out.bam \\
+        --read-files-command zcat \\
+        --out-reads-unmapped Fastx --num-gpus 1 \\
+        --out-prefix ${prefix}        
         """
     }else{
+        // if paired end, then we want to pass the reads as paired ended
+        // read must be ordered L1_R1, L1_R2, L2_R1, L2_R2 etc for pb run to correctly pair them
+        //collect the R1 reads by taking the reads with even index (assuming R1 is always first in the pair)
+        // first the _x files is ignored because we only need the index, then based off index selction we only need the file
+        def r1s = reads.withIndex().findAll { _x, i -> i % 2 == 0 }.collect { f, _x -> f }
+        // collect the R2 reads by taking the reads with odd index (assuming R1 is always first in the pair)
+        def r2s = reads.withIndex().findAll { _x, i -> i % 2 == 1 }.collect { f, _x -> f }
+        //zip array pairs together (column wise) and then create string of --in-fq R1.fastq.gz R2.fastq.gz for each pair
+        def reads_args = [r1s, r2s].transpose().collect { r1, r2 -> "--in-fq ${r1} ${r2}" }.join(' ')
+
         """
-        echo "PAIRED - would run pair-ended star" > ${meta.id}.txt
+        pbrun rna_fq2bam \\
+        ${reads_args} \\
+        --genome-lib-dir ${star_index} \\
+        --output-dir . \\
+        --ref ${genome_fasta} \\
+        --out-bam ${prefix}_Aligned.sortedByCoord.out.bam \\
+        --read-files-command zcat \\
+        --out-reads-unmapped Fastx --num-gpus 1 \\
+        --out-prefix ${prefix}  
         """
     }
-
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -1,0 +1,48 @@
+nextflow_process {
+
+    name "Test Process SRA_DOWNLOAD"
+    script "../main.nf"
+    process "SRA_DOWNLOAD"
+
+    test("paired-end download - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'SRR123456', single_end: false ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("single-end download - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'SRR123456', single_end: true ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
