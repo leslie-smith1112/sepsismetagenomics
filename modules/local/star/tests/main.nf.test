@@ -17,7 +17,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = files(params.) 
+                input[1] = file(params.star_index, checkIfExists: true) 
+                input[2] = file(params.genome_fasta, checkIfExists: true) 
                 """
             }
         }
@@ -42,7 +43,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = []
+                input[1] = file(params.star_index, checkIfExists: true) 
+                input[2] = file(params.genome_fasta, checkIfExists: true) 
                 """
             }
         }
@@ -58,19 +60,57 @@ nextflow_process {
 
 
     test("paired-end reads - real") {
+        tag "real"
         when {
             process {
                 """
                 input[0] = Channel.of([
                     [ id: 'test', single_end: false ],
                     [
-                        file(params.modules_smalltest_data_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_smalltest_data_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        file('/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/' + 'RS010_L001_R1.fastq.gz', checkIfExists: true),
+                        file('/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/' + 'RS010_L001_R2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = [] 
+                input[1] = file(params.star_index, checkIfExists: true) 
+                input[2] = file(params.genome_fasta, checkIfExists: true) 
                 """
             }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bam }
+                { assert process.out.unmapped_reads}
+
+            )
+        }
+    }
+
+    test("single-end reads - real") {
+        tag "real"
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test', single_end: true ],
+                    [
+                        file('/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/' + 'RS010_L001_R1.fastq.gz', checkIfExists: true),
+                    ]
+                ])
+                input[1] = file(params.star_index, checkIfExists: true) 
+                input[2] = file(params.genome_fasta, checkIfExists: true) 
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bam }
+                { assert process.out.unmapped_reads}
+
+            )
         }
     }
 
