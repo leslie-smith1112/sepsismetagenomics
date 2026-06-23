@@ -9,14 +9,14 @@ process STAR {
     path genome_fasta
 
     output:
-    tuple val(meta), path("${meta.id}_Aligned.sortedByCoord.out.bam"),          emit: bam
-    tuple val(meta), path("${meta.id}_Aligned.sortedByCoord.out.bam.bai"),      emit: bai
-    tuple val(meta), path("${meta.id}_Aligned.sortedByCoord.out_chrs.txt"),     emit: chr
-    tuple val(meta), path("${meta.id}_Log.final.out"),                           emit: log_final
-    tuple val(meta), path("${meta.id}_Log.out"),                                 emit: log_gen
-    tuple val(meta), path("${meta.id}_Log.progress.out"),                       emit: progress_out
-    tuple val(meta), path("${meta.id}_Unmapped.out.mate1"),                     emit: unmapped_reads
-    tuple val(meta), path("${meta.id}_SJ.out.tab"),                             emit: SJ
+    tuple val(meta), path("${meta.id}Aligned.sortedByCoord.out.bam"),          emit: bam
+    tuple val(meta), path("${meta.id}Aligned.sortedByCoord.out.bam.bai"),      emit: bai
+    tuple val(meta), path("${meta.id}Aligned.sortedByCoord.out_chrs.txt"),     emit: chr
+    tuple val(meta), path("${meta.id}Log.final.out"),                           emit: log_final
+    tuple val(meta), path("${meta.id}Log.out"),                                 emit: log_gen
+    tuple val(meta), path("${meta.id}Log.progress.out"),                       emit: progress_out
+    tuple val(meta), path("${meta.id}Unmapped.out.mate*"),                     emit: unmapped_reads // output depends on paired or single end
+    tuple val(meta), path("${meta.id}SJ.out.tab"),                             emit: SJ
 
 
 // conditional execution fate, only runs when 
@@ -59,14 +59,15 @@ process STAR {
     if(meta.single_end){
         // if single end, then we want to pass the reads as single ended
         //pb run needs this to be a pattern like --in-se-fq sample1_1.fastq.gz for each lane
-        def reads_arg = reads.collect {read -> "--in-se-fq ${read}"}.join(' ')
+        def reads_list = reads instanceof Path ? [reads] : reads // if instance of path, make into a list so we can call collect
+        def reads_arg = reads_list.collect { read -> "--in-se-fq ${read}" }.join(' ')
         """
         pbrun rna_fq2bam \\
         ${reads_arg} \\
         --genome-lib-dir ${star_index} \\
         --output-dir . \\
         --ref ${genome_fasta} \\
-        --out-bam ${prefix}_Aligned.sortedByCoord.out.bam \\
+        --out-bam ${prefix}Aligned.sortedByCoord.out.bam \\
         --read-files-command zcat \\
         --out-reads-unmapped Fastx --num-gpus 1 \\
         --out-prefix ${prefix}        
@@ -88,7 +89,7 @@ process STAR {
         --genome-lib-dir ${star_index} \\
         --output-dir . \\
         --ref ${genome_fasta} \\
-        --out-bam ${prefix}_Aligned.sortedByCoord.out.bam \\
+        --out-bam ${prefix}Aligned.sortedByCoord.out.bam \\
         --read-files-command zcat \\
         --out-reads-unmapped Fastx --num-gpus 1 \\
         --out-prefix ${prefix}  
@@ -98,14 +99,17 @@ process STAR {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_Aligned.sortedByCoord.out.bam
-    touch ${prefix}_Aligned.sortedByCoord.out.bam.bai
-    touch ${prefix}_Aligned.sortedByCoord.out_chrs.txt
-    touch ${prefix}_Log.final.out
-    touch ${prefix}_Log.out
-    touch ${prefix}_Log.progress.out
-    touch ${prefix}_Unmapped.out.mate1
-    touch ${prefix}_SJ.out.tab
+    touch ${prefix}Aligned.sortedByCoord.out.bam
+    touch ${prefix}Aligned.sortedByCoord.out.bam.bai
+    touch ${prefix}Aligned.sortedByCoord.out_chrs.txt
+    touch ${prefix}Log.final.out
+    touch ${prefix}Log.out
+    touch ${prefix}Log.progress.out
+    ${meta.single_end ? '' : "touch ${prefix}_Unmapped.out.mate2"}
+    touch ${prefix}Unmapped.out.mate1
+    touch ${prefix}SJ.out.tab
+    
+
 
     """
 
