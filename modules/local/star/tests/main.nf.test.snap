@@ -8,7 +8,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -17,7 +17,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Aligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
@@ -26,7 +26,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Aligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "3": [
@@ -35,7 +35,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "4": [
@@ -44,7 +44,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Log.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -53,7 +53,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
@@ -62,7 +62,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Unmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testUnmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "7": [
@@ -71,7 +71,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testSJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "SJ": [
@@ -80,7 +80,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testSJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "bai": [
@@ -89,7 +89,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Aligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "bam": [
@@ -98,7 +98,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "chr": [
@@ -107,7 +107,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Aligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "log_final": [
@@ -116,7 +116,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "log_gen": [
@@ -125,7 +125,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Log.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "progress_out": [
@@ -134,7 +134,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "unmapped_reads": [
@@ -143,15 +143,15 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_Unmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testUnmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-06-17T12:38:37.74525",
+        "timestamp": "2026-06-23T16:47:06.516486268",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.04.2"
         }
     },
     "single-end reads - stub": {
@@ -163,7 +163,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -172,7 +172,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Aligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
@@ -181,7 +181,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Aligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "3": [
@@ -190,7 +190,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "4": [
@@ -199,7 +199,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Log.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -208,7 +208,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
@@ -217,7 +217,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Unmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testUnmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "7": [
@@ -226,7 +226,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testSJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "SJ": [
@@ -235,7 +235,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testSJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "bai": [
@@ -244,7 +244,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Aligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "bam": [
@@ -253,7 +253,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "chr": [
@@ -262,7 +262,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Aligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testAligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "log_final": [
@@ -271,7 +271,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "log_gen": [
@@ -280,7 +280,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Log.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "progress_out": [
@@ -289,7 +289,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testLog.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "unmapped_reads": [
@@ -298,15 +298,15 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_Unmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "testUnmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-06-17T12:38:44.008379",
+        "timestamp": "2026-06-23T16:47:10.533812116",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.04.2"
         }
     }
 }
