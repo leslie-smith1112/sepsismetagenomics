@@ -4,7 +4,7 @@ nextflow_process {
     script "../main.nf"
     process "KRAKEN"
 
-    test("stub") {
+    test("kraken - stub") {
         options "-stub"
 
         when {
@@ -26,4 +26,26 @@ nextflow_process {
             )
         }
     }
+
+    test("kraken single end- real") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test', single_end: true ],
+                    file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate1', checkIfExists: true)
+                ])
+                input[1] = file(params.kraken_smalldatabase_path, checkIfExists: true)  
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report }
+            )
+        }
+    }
 }
+

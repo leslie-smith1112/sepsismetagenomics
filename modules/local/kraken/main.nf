@@ -5,7 +5,7 @@ process KRAKEN {
     label "metagenomics"
 
     input:
-    tuple val(meta), path(unmapped_one)
+    tuple val(meta), path(unmapped_reads)
     path kraken_db
 
     output:
@@ -19,7 +19,11 @@ process KRAKEN {
     def prefix = task.ext.prefix ?: "${meta.id}" // output file name prefix - will be sample ID
 
     """
-    echo "Running Kraken2 on ${unmapped_one} with database ${kraken_db}" >> ${prefix}.k2report
+    if (meta.single_end) {
+        kraken2 --db ${kraken_db} --report ${prefix}.k2report ${args} ${unmapped_reads}
+    } else {
+        kraken2 --db ${kraken_db} --report ${prefix}.k2report ${args} ${unmapped_reads[0]} ${unmapped_reads[1]}
+    }
     """
 
     stub:
