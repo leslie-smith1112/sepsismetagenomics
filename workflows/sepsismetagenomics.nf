@@ -40,7 +40,11 @@ workflow SEPSISMETAGENOMICS {
     }
 
     SRA_DOWNLOAD(ch_branched.sra.map {meta, _reads -> meta}) // input is just the meta becasue we will get the reads from the output of this process, output is [meta, [fastq_1, fastq_2]]
-    def ch_reads = ch_branched.local.mix(SRA_DOWNLOAD.out.reads) // ch_reads is now a channel of tuples like [meta, [fastq_1, fastq_2]] where the reads are either from the local input or downloaded from sra
+    def ch_sra_reads = SRA_DOWNLOAD.out.reads.map { meta, reads -> 
+        def single_end = reads instanceof Path || reads.size() == 1
+        [meta + [single_end: single_end], reads ]
+    } // output is [meta, [fastq_1, fastq_2]] where the reads are downloaded from sra
+    def ch_reads = ch_branched.local.mix(ch_sra_reads) // ch_reads is now a channel of tuples like [meta, [fastq_1, fastq_2]] where the reads are either from the local input or downloaded from sra
     //
     // MODULE: Run FastQC
     //
@@ -55,8 +59,23 @@ workflow SEPSISMETAGENOMICS {
 
     ch_multiqc_files = ch_multiqc_files.mix(STAR.out.log_final.map{_meta,file -> file})
 
-    KRAKEN(STAR.out.unmapped_reads, []) // second inputhere would be the kraken db
-    ch_multiqc_files = ch_multiqc_files.mix(KRAKEN.out.report.map{ _meta, file -> file })
+    // we will pass all kraken input as single channel so we only have to read in the database once per node.
+    def ch_kraken_input = STAR.out.unmapped_reads.map
+                                                 .collect()
+                                                 .map { items ->
+                                                    def sorted = items.sort {a, b -> a[0].id <=> b[0].id } // sort by sample id
+                                                    [sorted.collect {it[0]}, sorted.collect {it[1]}.flatten() ]
+                                                }
+
+    def ch_kraken_db = params.kraken_db ? file(params.kraken_db) : []
+    KRAKEN(ch_kraken_input, ch_kraken_db) 
+
+    // split samples back out for multiqc
+    ch_multiqc_files = ch_multiqc_files.mix(
+        KRAKEN.out.reports.flatMap {metas, reports ->
+            [metas.sort {it.id}, reports.sort {it.name }].transpose()
+            }.map{ _meta, report -> report}
+    )
 
 
     //
