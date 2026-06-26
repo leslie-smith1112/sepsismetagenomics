@@ -60,21 +60,24 @@ workflow SEPSISMETAGENOMICS {
     ch_multiqc_files = ch_multiqc_files.mix(STAR.out.log_final.map{_meta,file -> file})
 
     // we will pass all kraken input as single channel so we only have to read in the database once per node.
-    def ch_kraken_input = STAR.out.unmapped_reads.map
+    // star output the meta and the umapped reads, 
+    def ch_kraken_input = STAR.out.unmapped_reads.map { meta, reads -> [meta['id'], meta, reads] }  // pull id out as first element
                                                  .collect()
                                                  .map { items ->
-                                                    def sorted = items.sort {a, b -> a[0].id <=> b[0].id } // sort by sample id
-                                                    [sorted.collect {it[0]}, sorted.collect {it[1]}.flatten() ]
-                                                }
+                                                     def sorted = items.sort { a, b -> a[0] <=> b[0] }  // sort by plain string, no map access
+                                                     [ sorted.collect { it[1] }, sorted.collect { it[2] }.flatten() ]
+                                                 }
 
     def ch_kraken_db = params.kraken_db ? file(params.kraken_db) : []
     KRAKEN(ch_kraken_input, ch_kraken_db) 
 
     // split samples back out for multiqc
     ch_multiqc_files = ch_multiqc_files.mix(
-        KRAKEN.out.reports.flatMap {metas, reports ->
-            [metas.sort {it.id}, reports.sort {it.name }].transpose()
-            }.map{ _meta, report -> report}
+        KRAKEN.out.reports.flatMap  { metas, reports ->
+            def sorted_metas   = metas.sort   { a, b -> a['id'] <=> b['id'] }
+            def sorted_reports = reports.sort { a, b -> a.name  <=> b.name  }
+            [sorted_metas, sorted_reports].transpose()
+        }.map { _meta, report -> report }
     )
 
 
@@ -133,8 +136,32 @@ workflow SEPSISMETAGENOMICS {
             ]
         }
     )
-    emit:multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
+    emit:
+    multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
+
+    workflow.onComplete {
+        def trace_file = file("${params.outdir}/pipeline_info/execution_trace_${params.trace_report_suffix}.txt")
+        if (trace_file.exists()) {
+            def failed = trace_file.readLines()
+                .drop(1)  // skip header
+                .collect  { it.split('\t') }
+                .findAll  { cols -> cols[3] == 'FAILED' }  // status column
+                .collect  { cols ->
+                    def tag     = cols[6]   // tag column e.g. "STAR:RS010"
+                    def process = cols[5]   // process name
+                    def workdir = cols[8]   // work directory
+                    "${tag}\t${process}\t${workdir}/.command.err"
+                }
+
+            if (failed) {
+                file("Failed_Samples.txt").text = 
+                    "sample\tprocess\terror_log\n" + failed.join('\n')
+                log.warn "⚠️  ${failed.size()} samples failed — see Failed_Samples.txt"
+            }
+        }
+        log.info "Workflow completed!"
+    }
 }
 
 /*
