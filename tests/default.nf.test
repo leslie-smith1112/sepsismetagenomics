@@ -41,4 +41,22 @@ nextflow_pipeline {
             )
         }
     }
+
+    test("all samples - real") {
+        tag "real"
+        options "-profile test"
+        when {
+            params {
+                output_dir   = "$outputDir"
+            }
+    }
+
+    then {
+        assertAll(
+            { assert workflow.success },
+            { assert path("$outputDir/star").exists() },
+            { assert path("$outputDir/kraken").exists() },
+            { assert path("$outputDir/multiqc").exists() }
+        )
+    }
 }

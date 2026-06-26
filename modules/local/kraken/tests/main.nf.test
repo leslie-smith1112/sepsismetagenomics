@@ -55,9 +55,14 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id: 'test', single_end: false ],
-                    file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate1', checkIfExists: true),
-                    file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate2', checkIfExists: true)
+                    [ [ id: 'test', single_end: false ], [ id: 'test2', single_end: true ]]
+                    [
+                        file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate1', checkIfExists: true),
+                        file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate2', checkIfExists: true)
+                    ]
+                    [
+                        file(params.modules_kraken_data_path + 'K004_Unmapped.out.mate1', checkIfExists: true)
+                    ]
                 ])
                 input[1] = file(params.kraken_smalldatabase_path, checkIfExists: true)  
                 """
