@@ -155,13 +155,31 @@ workflow PIPELINE_COMPLETION {
 
         completionSummary(monochrome_logs)
 
-    }
+        def trace_file = file("${outdir}/pipeline_info/execution_trace_${workflow.runName}.txt")
+        if (trace_file.exists()) {
+            def failed = trace_file.readLines()
+                .drop(1)  // skip header
+                .collect  { it.split('\t') }
+                .findAll  { cols -> cols[3] == 'FAILED' }  // status column
+                .collect  { cols ->
+                    def tag     = cols[6]   // tag column e.g. "STAR:RS010"
+                    def process = cols[5]   // process name
+                    def workdir = cols[8]   // work directory
+                    "${tag}\t${process}\t${workdir}/.command.err"
+                }
 
+            if (failed) {
+                file("${outdir}/Failed_Samples.txt").text = 
+                    "sample\tprocess\terror_log\n" + failed.join('\n')
+                log.warn "⚠️  ${failed.size()} samples failed — see Failed_Samples.txt"
+            }
+        }
+        log.info "Workflow completed!"
+    }
     workflow.onError {
         log.error "Pipeline failed. Please refer to troubleshooting docs for common issues: https://nf-co.re/docs/running/troubleshooting"
     }
 }
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     FUNCTIONS
