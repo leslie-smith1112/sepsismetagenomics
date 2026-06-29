@@ -65,7 +65,8 @@ workflow SEPSISMETAGENOMICS {
                                                  .collect()
                                                  .map { items ->
                                                      def sorted = items.sort { a, b -> a[0] <=> b[0] }  // sort by plain string, no map access
-                                                     [ sorted.collect { it[1] }, sorted.collect { it[2] }.flatten() ]
+                                                     // collectMany avoids flatten() recursing into Path objects (Path is Iterable)
+                                                     [ sorted.collect { it[1] }, sorted.collectMany { item -> item[2] instanceof List ? item[2] : [item[2]] } ]
                                                  }
 
     def ch_kraken_db = params.kraken_db ? file(params.kraken_db) : []
@@ -74,8 +75,10 @@ workflow SEPSISMETAGENOMICS {
     // split samples back out for multiqc
     ch_multiqc_files = ch_multiqc_files.mix(
         KRAKEN.out.reports.flatMap  { metas, reports ->
-            def sorted_metas   = metas.sort   { a, b -> a['id'] <=> b['id'] }
-            def sorted_reports = reports.sort { a, b -> a.name  <=> b.name  }
+            def reports_list   = reports instanceof List ? reports : [reports]
+            def sorted_metas   = metas.sort        { a, b -> a['id'] <=> b['id'] }
+            // use getFileName().toString() - Path.name is not a valid property and breaks <=> comparison
+            def sorted_reports = reports_list.sort { a, b -> a.getFileName().toString() <=> b.getFileName().toString() }
             [sorted_metas, sorted_reports].transpose()
         }.map { _meta, report -> report }
     )
