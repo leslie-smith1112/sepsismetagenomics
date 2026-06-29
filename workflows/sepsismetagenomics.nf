@@ -140,29 +140,9 @@ workflow SEPSISMETAGENOMICS {
     multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
 
-    workflow.onComplete {
-        def trace_file = file("${params.outdir}/pipeline_info/execution_trace_${params.trace_report_suffix}.txt")
-        if (trace_file.exists()) {
-            def failed = trace_file.readLines()
-                .drop(1)  // skip header
-                .collect  { it.split('\t') }
-                .findAll  { cols -> cols[3] == 'FAILED' }  // status column
-                .collect  { cols ->
-                    def tag     = cols[6]   // tag column e.g. "STAR:RS010"
-                    def process = cols[5]   // process name
-                    def workdir = cols[8]   // work directory
-                    "${tag}\t${process}\t${workdir}/.command.err"
-                }
 
-            if (failed) {
-                file("Failed_Samples.txt").text = 
-                    "sample\tprocess\terror_log\n" + failed.join('\n')
-                log.warn "⚠️  ${failed.size()} samples failed — see Failed_Samples.txt"
-            }
-        }
-        log.info "Workflow completed!"
-    }
 }
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
