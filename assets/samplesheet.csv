@@ -7,7 +7,3 @@ K003,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsism
 K003,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/K003_L2.sub.fastq.gz,,local
 K003,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/K003_L3.sub.fastq.gz,,local
 K003,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/K003_L4.sub.fastq.gz,,local
-SRR1652929,,,sra
-SRR12291509,,,sra
-notrealsra,,,sra
-notreallocal,,,local

@@ -1,7 +1,7 @@
 
 process KRAKEN {
 
-    tag "KRAKEN:${metas*.id.join(',')}"
+    tag "${metas*.id.join(',')}"
 
     label "metagenomics"
 
