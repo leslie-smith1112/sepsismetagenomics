@@ -160,10 +160,10 @@ workflow PIPELINE_COMPLETION {
             def failed = trace_file.readLines()
                 .drop(1)  // skip header
                 .collect  { it.split('\t') }
-                .findAll  { cols -> cols[5] == 'FAILED' }  // status column
+                .findAll  { cols -> cols[4] == 'FAILED' }  // status column
                 .collect  { cols ->
-                    def tag     = cols[4]   // tag column e.g. "STAR:RS010"
-                    def workdir = cols[2]   // work directory
+                    def tag     = cols[3]   // tag column e.g. "STAR:RS010"
+                    def workdir = cols[1]   // work directory
                     "${tag}\t${workdir}/.command.err"
                 }
 
