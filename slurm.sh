@@ -16,7 +16,7 @@ mkdir -p logs
 module load nextflow
 
 nextflow run main.nf \
-    -profile conf/hipergator.config \
+    -profile hipergator \
     --outdir results/ \
     -resume
 
