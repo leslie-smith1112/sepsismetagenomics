@@ -17,7 +17,7 @@ process SRA_DOWNLOAD {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p tmp
-    prefetch ${meta.id} --output-directory .
+    prefetch ${prefix} --output-directory .
     fasterq-dump ${prefix} \\
         --threads ${task.cpus} \\
         --split-files \\

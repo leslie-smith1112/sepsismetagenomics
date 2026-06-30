@@ -45,4 +45,46 @@ nextflow_process {
             )
         }
     }
+
+    test("paired-end download - real") {
+        tag "real"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [ id: 'SRR12291509', single_end: false ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reads }
+            )
+        }
+    }
+
+        test("single-end download - real") {
+        tag "real"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [ id: 'SRR1652929', single_end: true ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reads }
+            )
+        }
+    }
 }

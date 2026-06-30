@@ -61,13 +61,27 @@ workflow SEPSISMETAGENOMICS {
 
     // we will pass all kraken input as single channel so we only have to read in the database once per node.
     // star output the meta and the umapped reads, 
-    def ch_kraken_input = STAR.out.unmapped_reads.map { meta, reads -> [meta['id'], meta, reads] }  // pull id out as first element
-                                                 .collect()
-                                                 .map { items ->
-                                                     def sorted = items.sort { a, b -> a[0] <=> b[0] }  // sort by plain string, no map access
-                                                     // collectMany avoids flatten() recursing into Path objects (Path is Iterable)
-                                                     [ sorted.collect { it[1] }, sorted.collectMany { item -> item[2] instanceof List ? item[2] : [item[2]] } ]
-                                                 }
+    //[sampleID, other meta, reads] -> collect all into one list -> items are sorted 
+    // def ch_kraken_input = STAR.out.unmapped_reads.map { meta, reads -> [meta['id'], meta, reads] }  // pull id out as first element
+    //                                              .collect()
+    //                                              .map { items ->
+    //                                                  def sorted = items.sort { a, b -> a[0] <=> b[0] }  // sort by plain string, no map access
+    //                                                  // collectMany avoids flatten() recursing into Path objects (Path is Iterable)
+    //                                                  [ sorted.collect { it[1] }, sorted.collectMany { item -> item[2] instanceof List ? item[2] : [item[2]] } ]
+    //                                              }
+
+     // Group all samples under constant key 0 so groupTuple accumulates them without flattening
+    def ch_kraken_input = STAR.out.unmapped_reads
+        .map { meta, reads ->
+            def reads_norm = reads instanceof List ? reads : [reads]
+            [0, meta['id'], meta, reads_norm]
+        }
+        .groupTuple(by: 0)
+        .map { _key, ids, metas, reads_lists ->
+            def zipped = [ids, metas, reads_lists].transpose()
+            def sorted  = zipped.sort { a, b -> a[0] <=> b[0] }
+            [ sorted.collect { it[1] }, sorted.collectMany { it[2] } ]
+        }
 
     def ch_kraken_db = params.kraken_db ? file(params.kraken_db) : []
     KRAKEN(ch_kraken_input, ch_kraken_db) 

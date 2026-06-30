@@ -11,8 +11,16 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id: 'test', single_end: true ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    [
+                        [ id: 'test', single_end: true ],
+                        [ id: 'test2', single_end: false]
+                    ],
+                    [
+                        file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate1', checkIfExists: true),
+                        file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate2', checkIfExists: true),
+                        file(params.modules_kraken_data_path + 'K004_Unmapped.out.mate1', checkIfExists: true)
+                    ]
+                    
                 ])
                 input[1] = [] 
                 """
@@ -27,40 +35,41 @@ nextflow_process {
         }
     }
 
-    test("kraken single end - real") {
+    // test("kraken single end - real") {
+    //     tag "real"
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = Channel.of([
+    //                 [[ id: 'test', single_end: true ]],
+    //                 file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate1', checkIfExists: true)
+    //             ])
+    //             input[1] = file(params.kraken_smalldatabase_path, checkIfExists: true)  
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert process.out.report }
+    //         )
+    //     }
+    // }
+
+        test("kraken - real") {
         tag "real"
         when {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id: 'test', single_end: true ],
-                    file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate1', checkIfExists: true)
-                ])
-                input[1] = file(params.kraken_smalldatabase_path, checkIfExists: true)  
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert process.out.report }
-            )
-        }
-    }
-
-        test("kraken paired end - real") {
-        tag "real"
-        when {
-            process {
-                """
-                input[0] = Channel.of([
-                    [ [ id: 'test', single_end: false ], [ id: 'test2', single_end: true ]]
+                    [
+                        [ id: 'test', single_end: false ], 
+                        [ id: 'test2', single_end: true ]
+                    ],
                     [
                         file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate1', checkIfExists: true),
-                        file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate2', checkIfExists: true)
-                    ]
-                    [
+                        file(params.modules_kraken_data_path + 'K003_Unmapped.out.mate2', checkIfExists: true),
                         file(params.modules_kraken_data_path + 'K004_Unmapped.out.mate1', checkIfExists: true)
                     ]
                 ])
@@ -72,7 +81,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.report }
+                { assert process.out.reports }
             )
         }
     }

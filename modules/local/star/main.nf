@@ -1,6 +1,7 @@
 process STAR {
-    tag "STAR:${meta.id}"
+    tag "${meta.id}"
     label "align"
+
 
     input:
     //tuple val(dataset), val(sample), val(read_type), path(reads)
