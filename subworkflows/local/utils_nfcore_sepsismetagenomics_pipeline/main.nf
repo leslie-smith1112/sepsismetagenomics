@@ -141,6 +141,7 @@ workflow PIPELINE_COMPLETION {
     // Completion email and summary
     //
     def trace_suffix = params.trace_report_suffix 
+    def workdir = workflow.workDir
     workflow.onComplete {
         if (email || email_on_fail) {
             completionEmail(
@@ -156,6 +157,7 @@ workflow PIPELINE_COMPLETION {
 
         completionSummary(monochrome_logs)
         def trace_file = file("${outdir}/pipeline_info/execution_trace_${trace_suffix}.txt")
+        
         if (trace_file.exists()) {
             def failed = trace_file.readLines()
                 .drop(1)  // skip header
@@ -163,15 +165,17 @@ workflow PIPELINE_COMPLETION {
                 .findAll  { cols -> cols[4] == 'FAILED' }  // status column
                 .collect  { cols ->
                     def tag     = cols[3]   // tag column e.g. "STAR:RS010"
-                    def workdir = cols[1]   // work directory
-                    "${tag}\t${workdir}/.command.err"
+                    def exit    = cols[5]   // exit code column
+                    def status  = cols[4]   // status column
+                    def hash = cols[1]   // work directory
+                    "${tag}\t${status}\t${exit}\t${workdir}/${hash}/.command.err"
                 }
 
-            //if (failed) {
+            if (failed) {
             file("${outdir}/Failed_Samples.txt").text = 
                 "sample\tprocess\terror_log\n" + failed.join('\n')
             log.warn "⚠️  ${failed.size()} samples failed — see Failed_Samples.txt"
-            //}
+            }
         }
         log.info "Workflow completed!"
     }
