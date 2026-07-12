@@ -30,7 +30,6 @@
             "source": {
                 "type": "string",
                 "enum": ["local", "sra"],
-                "meta": ["source"],
                 "errorMessage": "Source must be either 'local' or 'sra'"
             }
         },

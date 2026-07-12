@@ -17,7 +17,14 @@ process KRAKEN {
 
     script:
 
-// build copy and kraken commands per sample
+    // copy the kraken db onto this node's tmpfs (/dev/shm) once, then point every
+    // kraken2 call below at that local copy with --memory-mapping, so the db is
+    // loaded into RAM a single time and mmap-shared across all samples in the loop
+    // instead of each kraken2 invocation privately reloading it from network storage
+    def shm_db = "/dev/shm/kraken_db_${workflow.sessionId}"
+    def args = task.ext.args ?: '' // additional CLI arguments set in conf/modules.config
+
+// build kraken commands per sample
     def file_idx = [0] // use a list to hold the index so it can be modified inside the closure
     def kraken_cmds = metas.collect { meta ->
         def paired_arg = meta.single_end ? "" : "--paired"
@@ -32,17 +39,15 @@ process KRAKEN {
             r2 = all_reads[idx2]
         }
         def reads_arg = meta.single_end ? "${r1}" : "${r1} ${r2}"
-        "kraken2 --db ${kraken_db} --threads ${task.cpus} --report ${meta.id}.k2report ${paired_arg} ${reads_arg}"
+        "kraken2 --db ${shm_db} --memory-mapping --threads ${task.cpus} ${args} --report ${meta.id}.k2report ${paired_arg} ${reads_arg}"
     }.join('\n')
 
-
-    def copy_reads = all_reads.collect { "cp ${it} \${SLURM_TMPDIR}/" }.join('\n')
-    def args = task.ext.args ?: '' // additional CLI arguments set in conf/modules.config
     //def prefix = task.ext.prefix ?: "${meta.id}" // output file name prefix - will be sample ID
-    
+
     """
-    mkdir -p \${SLURM_TMPDIR}
-    ${copy_reads}
+    mkdir -p ${shm_db}
+    trap 'rm -rf ${shm_db}' EXIT
+    cp -r ${kraken_db}/. ${shm_db}/
     ${kraken_cmds}
     """
 
