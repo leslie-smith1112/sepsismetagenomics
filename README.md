@@ -14,7 +14,7 @@
 
 ## Introduction
 
-**nf-core/sepsismetagenomics** is a bioinformatics pipeline that ...
+**nf-core/sepsismetagenomics** is a bioinformatics pipeline to identify pathogens in RNA-Seq sepsis blood samples. 
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
@@ -52,10 +52,10 @@ Now, you can run the pipeline using:
 <!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
 
 ```bash
-nextflow run nf-core/sepsismetagenomics \
-   -profile <docker/singularity/.../institute> \
-   --input samplesheet.csv \
-   --outdir <OUTDIR>
+nextflow run main.nf \
+    -profile hipergator \
+    --outdir results/ \
+    -resume
 ```
 
 > [!WARNING]
@@ -83,6 +83,25 @@ If you would like to contribute to this pipeline, please see the [contributing g
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
 This pipeline uses code and infrastructure developed and maintained by the [nf-core](https://nf-co.re) community, reused here under the [MIT license](https://github.com/nf-core/tools/blob/main/LICENSE).
+
+> **STAR: ultrafast universal RNA-seq aligner.**
+>
+> Alexander Dobin, Carrie A Davis, Felix Schlesinger, Jorg Drenkow, Chris Zaleski, Sonali Jha, Philippe Batut, Mark Chaisson, Thomas R Gingeras
+>
+> _Bioinformatics_ 2012 Oct 25. doi: [10.1093/bioinformatics/bts635]( https://doi.org/10.1093/bioinformatics/bts635).
+
+> **Parabricks: GPU Accelerated Universal Pan-Instrument Genomics Analysis Software Suite.**
+>
+> Tong Zhu, Pankaj Vats, Seth Onken, Al Dunstan, Babak Zamirai, Daniel F. Puleri, Abhishek Nair, Marco Oliva, Anil Gaihre, Priyanka Sadhnani, Sam Li, Kamesh Arumugam, Alex Chacon, Milos Maric, Jonathan Cohen, Ankit Sethia, Mehrzad Samadi
+>
+> _bioRxiv_ 2015 July 27. doi: [10.1101/2025.07.23.666378](https://doi.org/10.1101/2025.07.23.666378 ).
+
+
+> **Improved metagenomic analysis with Kraken 2.**
+>
+> Wood, D.E., Lu, J. & Langmead, B
+>
+> _Genome Biol._ 2019 Nov 28. doi: [10.1186/s13059-019-1891-0](https://doi.org/10.1186/s13059-019-1891-0).
 
 > **The nf-core framework for community-curated bioinformatics pipelines.**
 >
