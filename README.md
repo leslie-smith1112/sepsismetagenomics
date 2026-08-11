@@ -14,7 +14,22 @@
 
 ## Introduction
 
-**nf-core/sepsismetagenomics** is a bioinformatics pipeline to identify pathogens in RNA-Seq sepsis blood samples. 
+**nf-core/sepsismetagenomics** is a bioinformatics pipeline to identify pathogens in RNA-Seq samples from humans. It takes a samplesheet with FASTQ files or SRA accession number, downloads sample from SRA when needed, performs quality control, removes reads that align to the human genome using STAR, assigns taxonomic labels to the unmapped sequences, and performs MultiQC on each step. In general this pipeline follows analysis workflow recommended by [Lu, J. et al.](https://doi.org/10.1038/s41596-022-00738-y).
+
+#### Pipeline Input file
+The pipeline takes in a csv file from `assets/samplesheet.csv` containing rows with four columns corresponding to: `sample_name,path_to_fastq_1,path_to_fastq_2,source`. <br>
+`sample_name` = the name of the samples to be processed <br>
+`path_to_fastq_1` = path to location of read 1 OR empty if source = `sra`<br>
+`path_to_fastq_2` = path to location of read 2 if paired-end OR empty if single-ended <br>
+`source` = local OR sra
+
+Example input:
+```
+sample,fastq_1,fastq_2,source
+SS_01, data/SS_01.fastq.gz,,local
+SS_02, data/SS_02_R1.fastq.gz,data/SS_02_R2.fastq.gz,local
+SRR0946912,,,sra
+```
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
@@ -24,7 +39,7 @@
 
 <!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
      workflows use the "tube map" design for that. See https://nf-co.re/docs/community/brand/workflow-schematics#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline --><br>.1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))<br>2. Download reads from SRA when `source == sra`([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))<br>3.Align reads to human genome using T2T reference([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))<br>4.Assign taxonomic labels to unmapped reads([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))<br>5.Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
 
 ## Usage
 
@@ -49,8 +64,6 @@ Each row represents a fastq file (single-end) or a pair of fastq files (paired e
 
 Now, you can run the pipeline using:
 
-<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
-
 ```bash
 nextflow run main.nf \
     -profile hipergator \
@@ -65,46 +78,20 @@ nextflow run main.nf \
 
 nf-core/sepsismetagenomics was originally written by Leslie Smith.
 
-We thank the following people for their extensive assistance in the development of this pipeline:
-
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
-
 ## Contributions and Support
 
 If you would like to contribute to this pipeline, please see the [contributing guidelines](docs/CONTRIBUTING.md).
 
 ## Citations
 
-<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
-<!-- If you use nf-core/sepsismetagenomics for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
-
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
-
-An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
+References for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
+This pipeline uses 
 
 This pipeline uses code and infrastructure developed and maintained by the [nf-core](https://nf-co.re) community, reused here under the [MIT license](https://github.com/nf-core/tools/blob/main/LICENSE).
-
-> **STAR: ultrafast universal RNA-seq aligner.**
->
-> Alexander Dobin, Carrie A Davis, Felix Schlesinger, Jorg Drenkow, Chris Zaleski, Sonali Jha, Philippe Batut, Mark Chaisson, Thomas R Gingeras
->
-> _Bioinformatics_ 2012 Oct 25. doi: [10.1093/bioinformatics/bts635]( https://doi.org/10.1093/bioinformatics/bts635).
-
-> **Parabricks: GPU Accelerated Universal Pan-Instrument Genomics Analysis Software Suite.**
->
-> Tong Zhu, Pankaj Vats, Seth Onken, Al Dunstan, Babak Zamirai, Daniel F. Puleri, Abhishek Nair, Marco Oliva, Anil Gaihre, Priyanka Sadhnani, Sam Li, Kamesh Arumugam, Alex Chacon, Milos Maric, Jonathan Cohen, Ankit Sethia, Mehrzad Samadi
->
-> _bioRxiv_ 2015 July 27. doi: [10.1101/2025.07.23.666378](https://doi.org/10.1101/2025.07.23.666378 ).
-
-
-> **Improved metagenomic analysis with Kraken 2.**
->
-> Wood, D.E., Lu, J. & Langmead, B
->
-> _Genome Biol._ 2019 Nov 28. doi: [10.1186/s13059-019-1891-0](https://doi.org/10.1186/s13059-019-1891-0).
 
 > **The nf-core framework for community-curated bioinformatics pipelines.**
 >
 > Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
 >
 > _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
+
