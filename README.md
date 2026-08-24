@@ -7,7 +7,7 @@
 
 ## Introduction
 
-**nf-core/sepsismetagenomics** is a bioinformatics pipeline to identify pathogens in RNA-Seq samples from humans. It takes in a samplesheet with FASTQ files or SRA accession number (see below), downloads samples from SRA when needed, performs quality control, removes reads that align to the human genome using STAR, assigns taxonomic labels to the unmapped sequences using Kraken2, and performs MultiQC on each step. This pipeline follows analysis workflow recommended by [Lu, J. et al.](https://doi.org/10.1038/s41596-022-00738-y).
+**nf-core/sepsismetagenomics** is a bioinformatics pipeline to identify pathogens in RNA-Seq samples from humans. It takes in a samplesheet with FASTQ files or SRA accession number (see below), downloads samples from SRA when needed, performs quality control, removes reads that align to the human genome using STAR, assigns taxonomic labels to the unmapped sequences using Kraken2, and performs MultiQC on each step. This pipeline follows analysis workflow recommended by [Lu, J. et al.](https://doi.org/10.1038/s41596-022-00738-y). Currently only built for application in the Graim lab on UF HiperGator.
 
 ![Workflow](./sepsismeta_workflow.jpg)
 
