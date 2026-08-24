@@ -1,0 +1,68 @@
+{
+    "paired-end download - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        [
+                            {
+                                "id": "SRR123456",
+                                "single_end": false
+                            }
+                        ],
+                        "[SRR123456]_1.fastq.gz:md5,45d43227ecd9a2a13b3e85e935468b21"
+                    ]
+                ],
+                "reads": [
+                    [
+                        [
+                            {
+                                "id": "SRR123456",
+                                "single_end": false
+                            }
+                        ],
+                        "[SRR123456]_1.fastq.gz:md5,45d43227ecd9a2a13b3e85e935468b21"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-22T13:06:32.223079",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "single-end download - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        [
+                            {
+                                "id": "SRR123456",
+                                "single_end": true
+                            }
+                        ],
+                        "[SRR123456]_1.fastq.gz:md5,45d43227ecd9a2a13b3e85e935468b21"
+                    ]
+                ],
+                "reads": [
+                    [
+                        [
+                            {
+                                "id": "SRR123456",
+                                "single_end": true
+                            }
+                        ],
+                        "[SRR123456]_1.fastq.gz:md5,45d43227ecd9a2a13b3e85e935468b21"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-22T13:06:38.297719",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    }
+}

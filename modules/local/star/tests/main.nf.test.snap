@@ -1,0 +1,312 @@
+{
+    "paired-end reads - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testAligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testAligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testAligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testLog.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testLog.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testLog.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testUnmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "7": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testSJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "SJ": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testSJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testAligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testAligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "chr": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testAligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log_final": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testLog.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log_gen": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testLog.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "progress_out": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testLog.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "unmapped_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "testUnmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-23T16:47:06.516486268",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.2"
+        }
+    },
+    "single-end reads - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testAligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testAligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testAligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testLog.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testLog.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testLog.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testUnmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "7": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testSJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "SJ": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testSJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testAligned.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testAligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "chr": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testAligned.sortedByCoord.out_chrs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log_final": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testLog.final.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log_gen": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testLog.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "progress_out": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testLog.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "unmapped_reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "testUnmapped.out.mate1:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-23T16:47:10.533812116",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.2"
+        }
+    }
+}

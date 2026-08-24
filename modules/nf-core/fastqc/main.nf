@@ -15,12 +15,13 @@ process FASTQC {
     tuple val(meta), path("*.zip"), emit: zip
     tuple val("${task.process}"), val('fastqc'), eval('fastqc --version | sed "/FastQC v/!d; s/.*v//"'), emit: versions_fastqc, topic: versions
 
+// conditional execution fate, only runs when 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: '' // additional CLI arguments set in conf/modules.config
+    def prefix = task.ext.prefix ?: "${meta.id}" // output file name prefix - will be sample ID
     // Make list of old name and new name pairs to use for renaming in the bash while loop
     def old_new_pairs = reads instanceof Path || reads.size() == 1 ? [[reads, "${prefix}.${reads.extension}"]] : reads.withIndex().collect { entry, index -> [entry, "${prefix}_${index + 1}.${entry.extension}"] }
     def rename_to = old_new_pairs*.join(' ').join(' ')

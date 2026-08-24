@@ -4,30 +4,60 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test") {
+    test("basic - single-end, paired-end, and SRA - stub") {
+        options "-stub"
 
         when {
             params {
+                input  = "${projectDir}/assets/samplesheet.csv"
                 outdir = "$outputDir"
             }
         }
 
         then {
-            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
             def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
-            // stable_content: All files in ${params.outdir}/ with stable content
-            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
-            assert workflow.success
             assertAll(
-                { assert snapshot(
-                    // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
-                    removeNextflowVersion("$outputDir/pipeline_info/sepsismetagenomics_software_mqc_versions.yml"),
-                    // All stable path name, with a relative path
-                    stable_path,
-                    // All files with stable contents
-                    stable_content
-                ).match() }
+                { assert workflow.success },
+                { assert snapshot(stable_path).match() }
             )
         }
     }
+
+    test("multi-lane - paired-end and single-end with 4 lanes - stub") {
+        options "-stub"
+
+        when {
+            params {
+                input  = "${projectDir}/assets/test_samplesheet_multilane.csv"
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(stable_path).match() }
+            )
+        }
+    }
+
+    test("all samples - real") {
+        tag "real"
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+    }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert path("$outputDir/star").exists() },
+                { assert path("$outputDir/kraken").exists() },
+                { assert path("$outputDir/multiqc").exists() }
+            )
+        }
+    }
+
 }

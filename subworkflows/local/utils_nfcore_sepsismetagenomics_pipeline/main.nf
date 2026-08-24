@@ -94,7 +94,9 @@ workflow PIPELINE_INITIALISATION {
         .fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
         .map {
             meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
+                if (meta.source == 'sra') { // add sra key becasue we wont know if its single or paired yet
+                    return [ meta.id, meta, [] ]
+                } else if (!fastq_2) {
                     return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
                 } else {
                     return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
@@ -138,6 +140,8 @@ workflow PIPELINE_COMPLETION {
     //
     // Completion email and summary
     //
+    def trace_suffix = params.trace_report_suffix 
+    def workdir = workflow.workDir
     workflow.onComplete {
         if (email || email_on_fail) {
             completionEmail(
@@ -152,14 +156,33 @@ workflow PIPELINE_COMPLETION {
         }
 
         completionSummary(monochrome_logs)
+        def trace_file = file("${outdir}/pipeline_info/execution_trace_${trace_suffix}.txt")
+        
+        if (trace_file.exists()) {
+            def failed = trace_file.readLines()
+                .drop(1)  // skip header
+                .collect  { it.split('\t') }
+                .findAll  { cols -> cols[4] == 'FAILED' }  // status column
+                .collect  { cols ->
+                    def tag     = cols[3]   // tag column e.g. "STAR:RS010"
+                    def exit    = cols[5]   // exit code column
+                    def status  = cols[4]   // status column
+                    def hash = cols[1]   // work directory
+                    "${tag}\t${status}\t${exit}\t${workdir}/${hash}/.command.err"
+                }
 
+            if (failed) {
+            file("${outdir}/Failed_Samples.txt").text = 
+                "sample\tprocess\terror_log\n" + failed.join('\n')
+            log.warn "⚠️  ${failed.size()} samples failed — see Failed_Samples.txt"
+            }
+        }
+        log.info "Workflow completed!"
     }
-
     workflow.onError {
         log.error "Pipeline failed. Please refer to troubleshooting docs for common issues: https://nf-co.re/docs/running/troubleshooting"
     }
 }
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     FUNCTIONS
@@ -178,10 +201,12 @@ def validateInputParameters() {
 def validateInputSamplesheet(input) {
     def (metas, fastqs) = input[1..2]
 
-    // Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
-    def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
-    if (!endedness_ok) {
-        error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end: ${metas[0].id}")
+    // SRA samples have single_end determined after download — skip check for them
+    if (metas[0].source != 'sra') {
+        def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
+        if (!endedness_ok) {
+            error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end: ${metas[0].id}")
+        }
     }
 
     return [ metas[0], fastqs ]

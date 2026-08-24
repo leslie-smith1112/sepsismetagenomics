@@ -3,6 +3,9 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+include { SRA_DOWNLOAD } from '../modules/local/sra_download/main'
+include { STAR } from '../modules/local/star/main'
+include { KRAKEN } from '../modules/local/kraken/main'
 include { FASTQC                 } from '../modules/nf-core/fastqc/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
@@ -29,11 +32,71 @@ workflow SEPSISMETAGENOMICS {
 
     def ch_versions = channel.empty()
     def ch_multiqc_files = channel.empty()
+    
+    
+    def ch_branched = ch_samplesheet.branch {
+        local: it[0].source == 'local' // it here is [meta, [fastq_1, fastq_2]], so we are looking at the meta part of the tuple and checking the source key
+        sra: it[0].source == 'sra'
+    }
+
+    SRA_DOWNLOAD(ch_branched.sra.map {meta, _reads -> meta}) // input is just the meta becasue we will get the reads from the output of this process, output is [meta, [fastq_1, fastq_2]]
+    def ch_sra_reads = SRA_DOWNLOAD.out.reads.map { meta, reads -> 
+        def single_end = reads instanceof Path || reads.size() == 1
+        [meta + [single_end: single_end], reads ]
+    } // output is [meta, [fastq_1, fastq_2]] where the reads are downloaded from sra
+    def ch_reads = ch_branched.local.mix(ch_sra_reads) // ch_reads is now a channel of tuples like [meta, [fastq_1, fastq_2]] where the reads are either from the local input or downloaded from sra
     //
     // MODULE: Run FastQC
     //
-    FASTQC(ch_samplesheet)
+
+    FASTQC(ch_reads)
     ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.map{ _meta, file -> file })
+
+    def ch_star_index   = params.star_index   ? file(params.star_index)   : []
+    def ch_genome_fasta = params.genome_fasta ? file(params.genome_fasta) : []  
+
+    STAR(ch_reads, ch_star_index, ch_genome_fasta) // second input here would be the star index
+
+    ch_multiqc_files = ch_multiqc_files.mix(STAR.out.log_final.map{_meta,file -> file})
+
+    // we will pass all kraken input as single channel so we only have to read in the database once per node.
+    // star output the meta and the umapped reads, 
+    //[sampleID, other meta, reads] -> collect all into one list -> items are sorted 
+    // def ch_kraken_input = STAR.out.unmapped_reads.map { meta, reads -> [meta['id'], meta, reads] }  // pull id out as first element
+    //                                              .collect()
+    //                                              .map { items ->
+    //                                                  def sorted = items.sort { a, b -> a[0] <=> b[0] }  // sort by plain string, no map access
+    //                                                  // collectMany avoids flatten() recursing into Path objects (Path is Iterable)
+    //                                                  [ sorted.collect { it[1] }, sorted.collectMany { item -> item[2] instanceof List ? item[2] : [item[2]] } ]
+    //                                              }
+
+     // Group all samples under constant key 0 so groupTuple accumulates them without flattening
+    def ch_kraken_input = STAR.out.unmapped_reads
+        .map { meta, reads ->
+            def reads_norm = reads instanceof List ? reads : [reads]
+            [0, meta['id'], meta, reads_norm]
+        }
+        .groupTuple(by: 0)
+        .map { _key, ids, metas, reads_lists ->
+            def zipped = [ids, metas, reads_lists].transpose()
+            def sorted  = zipped.sort { a, b -> a[0] <=> b[0] }
+            [ sorted.collect { it[1] }, sorted.collectMany { it[2] } ]
+        }
+
+    def ch_kraken_db = params.kraken_db ? file(params.kraken_db) : []
+    KRAKEN(ch_kraken_input, ch_kraken_db) 
+
+    // split samples back out for multiqc
+    ch_multiqc_files = ch_multiqc_files.mix(
+        KRAKEN.out.reports.flatMap  { metas, reports ->
+            def reports_list   = reports instanceof List ? reports : [reports]
+            def sorted_metas   = metas.sort        { a, b -> a['id'] <=> b['id'] }
+            // use getFileName().toString() - Path.name is not a valid property and breaks <=> comparison
+            def sorted_reports = reports_list.sort { a, b -> a.getFileName().toString() <=> b.getFileName().toString() }
+            [sorted_metas, sorted_reports].transpose()
+        }.map { _meta, report -> report }
+    )
+
 
     //
     // Collate and save software versions
@@ -90,9 +153,13 @@ workflow SEPSISMETAGENOMICS {
             ]
         }
     )
-    emit:multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
+    emit:
+    multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
+
+
 }
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

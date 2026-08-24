@@ -1,3 +1,9 @@
-sample,fastq_1,fastq_2
-SAMPLE_PAIRED_END,/path/to/fastq/files/AEG588A1_S1_L002_R1_001.fastq.gz,/path/to/fastq/files/AEG588A1_S1_L002_R2_001.fastq.gz
-SAMPLE_SINGLE_END,/path/to/fastq/files/AEG588A4_S4_L003_R1_001.fastq.gz,
+sample,fastq_1,fastq_2,source
+RS010,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/RS010_L001_R1.fastq.gz,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/RS010_L001_R2.fastq.gz,local
+RS010,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/RS010_L002_R1.fastq.gz,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/RS010_L002_R2.fastq.gz,local
+RS010,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/RS010_L003_R1.fastq.gz,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/RS010_L003_R2.fastq.gz,local
+RS010,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/RS010_L004_R1.fastq.gz,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/RS010_L004_R2.fastq.gz,local
+K003,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/K003_L1.sub.fastq.gz,,local
+K003,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/K003_L2.sub.fastq.gz,,local
+K003,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/K003_L3.sub.fastq.gz,,local
+K003,/blue/kgraim/leslie.smith1/Repositories/Sepsis_Metagenomics/nf-core-sepsismetagenomics/assets/test_data/small/K003_L4.sub.fastq.gz,,local

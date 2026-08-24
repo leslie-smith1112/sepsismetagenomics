@@ -14,6 +14,18 @@
 
 > Andrews, S. (2010). FastQC: A Quality Control Tool for High Throughput Sequence Data [Online].
 
+- [STAR](https://academic.oup.com/bioinformatics/article/29/1/15/272537)
+
+> Dobin, A. et al. (2012). STAR: ultrafast universal RNA-seq aligner.
+
+- [Parabricks](https://www.biorxiv.org/content/10.1101/2025.07.23.666378v1)
+
+> Zhu, T. et al. (2025). Parabricks: GPU Accelerated Universal Pan-Instrument Genomics Analysis Software Suite.
+
+- [Kraken2](https://link.springer.com/article/10.1186/s13059-019-1891-0)
+
+> Wood, D.E., Lu, J. & Langmead, B. (2019). Improved metagenomic analysis with Kraken 2.
+
 - [MultiQC](https://pubmed.ncbi.nlm.nih.gov/27312411/)
 
 > Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.
